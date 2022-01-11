@@ -13,7 +13,7 @@ $ aws ec2 authorize-security-group-ingress --group-name nodejsapp-autoscale-sg1 
         {
             "SecurityGroupRuleId": "sgr-0c520aa550f1d95a4",
             "GroupId": "sg-0c4087493cc20cc89",
-            "GroupOwnerId": "045688815043",
+            "GroupOwnerId": "099999915043",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 22,
@@ -29,7 +29,7 @@ $ aws ec2 authorize-security-group-ingress --group-name nodejsapp-autoscale-sg1 
         {
             "SecurityGroupRuleId": "sgr-00e1ffa6d57d94975",
             "GroupId": "sg-0c4087493cc20cc89",
-            "GroupOwnerId": "045688815043",
+            "GroupOwnerId": "099999915043",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 9001,

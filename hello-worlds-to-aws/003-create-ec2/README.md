@@ -104,7 +104,7 @@ $ aws ec2  authorize-security-group-ingress \
         {
             "SecurityGroupRuleId": "sgr-0cea013ebf66de99a",
             "GroupId": "sg-014492d7ebfa3540a",
-            "GroupOwnerId": "045688815043",
+            "GroupOwnerId": "099999915043",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 22,

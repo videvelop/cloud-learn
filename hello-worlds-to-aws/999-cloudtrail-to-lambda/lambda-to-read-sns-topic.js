@@ -5,7 +5,7 @@ var async = require('async');
 var EVENT_SOURCE_TO_TRACK = /sns.amazonaws.com/;
 var EVENT_NAME_TO_TRACK   = /CreateTopic/;
 var DEFAULT_SNS_REGION  = 'us-east-1';
-var SNS_TOPIC_ARN       = 'arn:aws:sns:us-east-1:045688815043:vimalacloudtrail.fifo';
+var SNS_TOPIC_ARN       = 'arn:aws:sns:us-east-1:099999915043:vimalacloudtrail.fifo';
 
 var s3 = new aws.S3();
 var sns = new aws.SNS({

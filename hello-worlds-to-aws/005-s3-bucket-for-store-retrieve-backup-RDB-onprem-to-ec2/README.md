@@ -178,7 +178,7 @@ $  aws sts get-caller-identity
 {
     "Account": "98765415043", 
     "UserId": "AROAQVI987659876598YTJ:i-067f48b0a6498d76a", 
-    "Arn": "arn:aws:sts::045688815043:assumed-role/ec2-read-s3-backup-role/i-067f48b0a6498d76a"
+    "Arn": "arn:aws:sts::099999915043:assumed-role/ec2-read-s3-backup-role/i-067f48b0a6498d76a"
 }
 
 $ # copy the RDB backup locally and use that to restore the DB
