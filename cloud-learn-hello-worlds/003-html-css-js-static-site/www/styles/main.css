@@ -1,0 +1,16 @@
+
+
+
+body#indexpage {
+ background-image: url("../images/madurai-ayyanar.jpg");
+ background-size: 40%;
+ background-repeat: no-repeat; 
+ background-position: right top
+}
+
+body#contactuspage {
+    background-image: url("../images/madurai-ayyanar-horse.jpg");
+    background-size: 40%;
+    background-repeat: no-repeat; 
+    background-position: right top
+   }

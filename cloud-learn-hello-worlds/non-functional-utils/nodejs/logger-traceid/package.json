@@ -1,0 +1,18 @@
+{
+  "name": "logger-traceid",
+  "version": "1.0.0",
+  "main": "mylogger-mytraceid.js",
+  "dependencies": {
+    "cls-rtracer": "^2.6.0",
+    "winston": "^3.3.3"
+  },
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
