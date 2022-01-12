@@ -173,10 +173,10 @@ $ aws ec2 associate-iam-instance-profile --iam-instance-profile Name=ec2-instanc
 
 7.  ssh to the ec2 instance.
 ```
-$ # get the caller identity. You'd see the role you assciated. EC2 is associated with this role and that helps EC2 to get a token from STS (Simple Token Service) and that token is used for executing other aws cli commands.
+$ # get the caller identity. You'd see the role you assciated. EC2 is associated with this role and that helps EC2 to get a token from STS (Simple Token Service) and that token provides permissions for executing other aws cli commands such as "aws s3 cp".
 $  aws sts get-caller-identity 
 {
-    "Account": "98765415043", 
+    "Account": "099999915043", 
     "UserId": "AROAQVI987659876598YTJ:i-067f48b0a6498d76a", 
     "Arn": "arn:aws:sts::099999915043:assumed-role/ec2-read-s3-backup-role/i-067f48b0a6498d76a"
 }
@@ -189,11 +189,11 @@ download: s3://chw-sample-bkt1/m.backup to ./m.backup
 Now that the backup file is available in EC2, use that to set up your RDB with on-prem database copy.
 
 ## Destroy the services using AWS console
-  1. Stop the instance 
+  1. Stop & terminate the instance 
   2. Delete the instance profile
   3. Delete policy
   4. Delete role
-  5. Delete s3 bucket
+  5. Empty the s3 bucket and Delete s3 bucket
 
 ## Additional info
 Your database size for real projects' dev/test/prod needs may  be higher.  In that case, there is an option to use multi-part-load in S3.  Explore it further.  Starting point is given here. 

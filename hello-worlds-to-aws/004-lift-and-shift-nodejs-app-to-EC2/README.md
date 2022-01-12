@@ -13,7 +13,7 @@ To lift and shift nodejs webapp, you need to create an EC2 instance and install 
   1. EC2 instance price applies here.
 
 ## Create EC2 instance
-Follow the instructions given in [0-1-create-ec2](../0-1-crea6te-ec2) to create EC2 instance and ssh into it.
+Follow the instructions given in [003-create-ec2](../003-create-ec2) to create EC2 instance and ssh into it.
 
 Get the public DNS name of the running instance
 ```
@@ -37,21 +37,21 @@ $ nvm --version
 ## Copy nodejs app to EC2
 Git clone the sample app code or use your own app code.  Copy the source from your machine to ec2 instance. The below steps are to be run in your desktop / laptop machine. 
 ```
-git clone https://github.com/videv-periyarit/cloud-learn-hello-worlds.git
-cd cloud-learn-hello-worlds
-scp -r -i ~/.ssh/id_rsa_aws 1-nodejs-webapp ec2-user@ec2-3-89-254-202.compute-1.amazonaws.com:~/wrk/
+$ git clone https://github.com/videvelop/cloud-learn/tree/main/cloud-learn
+$ cd cloud-learn/hello-worlds
+$ scp -r -i ~/.ssh/id_rsa_aws 001-nodejs-microservice-resatapi-noauthec2-user@ec2-3-89-254-202.compute-1.amazonaws.com:~/wrk/
 ```
 
 In the ec2, npm install and run the app
 ```
-cd ~/wrk/1-nodejs-webapp
-npm i
-node server-app.js &
-curl http://localhost:9001
+$ cd ~/wrk/001-nodejs-microservice-resatapi-noauth
+$ npm i
+$ node server-app.js 
+$ curl http://localhost:9001
 ```
 You have created a linux machine in cloud and ran your own web app in it.
 
-## Configure Security Group to access web app
+## Configure Security Group to access nodejs app
 In order to achieve this, you need to change the secuirty group.  Similar to exposing port 22, you need to expose port 9001 where the web app runs.
 
 ```
@@ -62,12 +62,12 @@ aws ec2  authorize-security-group-ingress \
   --cidr 0.0.0.0/0
 ```
 
-# Access the web app
+# Access the nodejs app
 Now, access the app from internet by running curl in your machine outside ec2 or use browser.
 ```
 curl http://ec2-52-205-231-166.compute-1.amazonaws.com:9001
 ```
 A web app from on-prem is lifted and shifted to Cloud.
 
-# Destroy Services
-Destroy EC2 instance, security group and keypairs
+# Delete Services
+Delete EC2 instance, security group and keypairs.

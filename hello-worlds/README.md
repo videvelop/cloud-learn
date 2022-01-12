@@ -1,4 +1,4 @@
-﻿# cloud-learn-hello-worlds
+﻿# hello-worlds
 This repository contains some hello-world programs and scripts.
 
 These programs/scripts will be used to learn cloud services and various cloud architecture paradigms:
