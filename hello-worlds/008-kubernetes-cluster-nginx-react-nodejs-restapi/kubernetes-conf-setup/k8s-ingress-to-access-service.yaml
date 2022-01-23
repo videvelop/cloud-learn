@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodejs-ms1-service-ingress
+spec:
+  defaultBackend:
+    service:
+      name: nodejs-ms1-service
+      port:
+        number: 9001
+
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nodejs-ms1-service
+            port:
+              number: 9001
+  
