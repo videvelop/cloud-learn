@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-ms2-deployment
+  labels:
+    app: nodejs-ms2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-ms2
+  template:
+    metadata:
+      labels:
+        app: nodejs-ms2
+    spec:
+      containers:
+      - name: nodejs-ms2
+        image: vi/nodejs-ms2:v2
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9001
