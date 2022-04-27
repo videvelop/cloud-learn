@@ -14,7 +14,10 @@ function mylog (logmsg) {
 }
 
 app.listen(server_port, () =>
-    mylog(`Server started at port ${server_port}. Try http://${hostname}:${server_port}/`)
+    mylog(`Server started at port ${server_port}. Try http://localhost:${server_port}/
+    working routes 
+    http://localhost:${server_port}/
+    http://localhost:${server_port}/healthcheck`)
 );
 
 
@@ -26,7 +29,11 @@ app.use(function (req, res, next) {
 // show a response
 app.get('/', (req, res) => {
     mylog(`Processing URL ${req.baseUrl}`);
-    res.send('Hello World!<br/> Sample nodejs express app <br/>');
+    res.send(`Hello World!<br/> Sample nodejs express app <br/> 
+    working routes 
+   <div><a href="http://localhost:${server_port}/">/</a></div>
+   <div><a href="http://localhost:${server_port}/healthcheck">/healthcheck</a></div>
+    `);
 });
 
 // show a response

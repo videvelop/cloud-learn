@@ -1,7 +1,9 @@
 ﻿# cloud-learn
 
-This is a tutorial to learn about cloud services.  The learning approach is hands-on.  This repository has a set of samples.  You can follow these samples and do the exercise yourself to learn the cloud services.
+This is a tutorial to learn about cloud services.  The learning approach is hands-on and mostly CLI based.  
 
-Follow the samples sequentially under hello-worlds-to-aws to learn about AWS services.  More samples under AWS, and samples for GCP and Azure will follow.
+hello-worlds folder has: a set of generic hello world samples. For e.g., static web site,  microservice REST API. 
 
-cloud-learn-hello-worlds has sample hello world applications that will be used in learning about cloud services.
+hello-worlds-to-aws folder has: These hello-world samples deployed using AWS cloud services. 
+
+You can follow the content under hello-worlds-to-aws folder sequentially and do the exercise yourself to learn about the AWS cloud services.
