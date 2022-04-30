@@ -1,7 +1,7 @@
 # hello-worlds-to-aws - AWS Setup
-You'll setup Accounts and IAM users as mentioned in this section.
+You'll need to setup Accounts and IAM users. You can create in any name.  Below structure will be used in this tutorial.
 
-You'll need one AWS account to do most of the exercises.  For some exercises, you'll need multiple AWS accounts.  It is recommended that you setup 3 AWS Accounts (not all at once.. you can create one now and create others when the exercises need those.) The Accounts, Users that are referred in this exercise are as given in this table.
+ It is enough to have one AWS account to do most of the exercises.  For some exercises, you'll need multiple AWS accounts.  It is recommended that you setup 3 AWS Accounts (you can create one to start with and create others when the exercises need those.) The Accounts, Users that are referred in this exercise are as given in this table.
 
 | Account  | User            | Description                                                                |
 | -------- | --------------- | -------------------------------------------------------------------------- |
@@ -28,24 +28,22 @@ You'll need one AWS account to do most of the exercises.  For some exercises, yo
 |          |                 |
 
 ## Desktop/ Laptop requirement
-I use a custom built desktop with the following configuration.  
-Ryzen 7 
-16 GB RAM
-1 GB SSD
-OS: Ubuntu 20.04.3 LTS x86_64
+I use a laptop with the following configuration.  
 CPU: AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx (8) @ 2.300GHz
-Memory: 8GB
+Memory: 16GB
+OS: Ubuntu 20.04.3 LTS x86_64
+(operate as dual boot linux machine or windows 11 with windows subsystem for linux)
 
 
 `AWS-PRICE` for this setup:
   - IAM is free.  It does not cost any money to create users, user groups and permissons for the users.
-
-
   
   ### Register and Create Users
   The learner is expected to setup the following:
   1. Register in [AWS](https://aws.amazon.com).  
+
   2. The email you first give for registration is the root account and it has all the privileges.  Let's say this root account's name is `chw-org-root`.
+
   3. Create an [IAM](https://console.aws.amazon.com/iam/home#/users$new?step=details) user after logging-in using the root account used for Registration. Let's call this IAM user `chw-org-admin1`.  Enable AWS management console and programmatic access for this user.
   ![console screen shot][iam-programmatic-access]
 
@@ -105,6 +103,34 @@ That is the setup required to continue with this tutorial.
 
 
 # Additional info
+Once root account is created, admin accounts and access keys can be created with the following commands.
+```
+$ aws iam create-user --user-name chw-org-admin1 --permissions-boundary arn:aws:iam::aws:policy/AdministratorAccess
+{
+    "User": {
+        "Path": "/",
+        "UserName": "chw-org-admin1",
+        "UserId": "XXXXXXXXXXXXXXXXXXZK2",
+        "Arn": "arn:aws:iam::2nnnnnnnnn77:user/chw-org-admin1",
+        "CreateDate": "2022-04-27T09:41:09+00:00",
+        "PermissionsBoundary": {
+            "PermissionsBoundaryType": "Policy",
+            "PermissionsBoundaryArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+    }
+}
+
+$ aws iam create-access-key --user-name chw-org-admin1
+{
+    "AccessKey": {
+        "UserName": "chw-org-admin1",
+        "AccessKeyId": "XXXXXXXXXXXXXXXXD2VD",
+        "Status": "Active",
+        "SecretAccessKey": "gaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxEMoapV",
+        "CreateDate": "2022-04-27T09:44:35+00:00"
+    }
+}
+```
 
 ## Controlling costs
 
@@ -113,21 +139,41 @@ That is the setup required to continue with this tutorial.
 https://console.aws.amazon.com/billing/home?region=us-east-1#/freetier
 
 ### Set budget
+Using console, budget can be set using 
+https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/budgets
 
-### Set Alarms
+Follow these commands to set budget using CLI. Remember to seet the json file contnents to set email for your notification. When you reach above 80% of $5, you'll get a notification to the given e-mail.
 
-## Outside AWS configurations for enriched learning
+There is NO WAY to tell AWS to terminate all your services if you go above budget.  You need to monitor usage carefully so that you don't spend more than you anticipated.
+```
+$ aws budgets create-budget \
+    --account-id 0nnnnnnnnn14 \
+    --budget file://budget.json \
+    --notifications-with-subscribers file://budget-notification.json
+$ aws budgets describe-budgets --account-id 0nnnnnnnnn14
+{
+    "Budgets": [
+        {
+            "BudgetName": "chwbudget",
+            "BudgetLimit": {
+                "Amount": "5.0",
+                "Unit": "USD"
+            },
+            "CostTypes": {
+              ...
+```
+
+## Other setup Outside AWS 
   1. It helps to learn if you have a domain registered for yourself.  Register in any of the domain registrars such as GoDaddy, Namecheap or in AWS itself under [Route 53 serivce](https://console.aws.amazon.com/route53/home#DomainListing:).
 
 
 ## Some useful things to note
-  1. AWS' has a concept of "region", which is a geographical area.  Within region, AWS has data ceters that are termed as "Availability Zones".  This tutorial will use "us-east-1" as default region.  If you created one service using cli (say ec2 instance) and don't find it in the console, check whether you are using same region in both the places. Also, check whether you are using the same account in case you have multiple AWS accounts.
-  3. AWS CLI gives output in json, yaml, text formats.  By default, this tutorial uses json output format.  AWS uses JMESPath query language to filter out json output at client side using "--query" option.  This tutorial uses --query option in aws cli commands to make the output shorter and easier to read. You can remove that option and run the queries for full blown output.  
+  1. AWS' has a concept of "region", which is a geographical area.  Within region, AWS has data ceters that are termed as "Availability Zones".  This tutorial uses "us-east-1" as default region.  If you created one service using cli (say ec2 instance) and don't find it in the console, check whether you are using the same region in both the places. Also, check whether you are using the same account in case you have multiple AWS accounts.
+  2. AWS CLI gives output in json, yaml, text formats.  By default, this tutorial uses json output format.  AWS uses JMESPath query language to filter out json output at client side using "--query" option.  This tutorial uses --query option in aws cli commands to make the outputs shorter and easier to read. You can remove that option and run the queries for full blown output.  
   It is highly recommended to pickup JMESPath skill.  Refer https://jmespath.org/ .
-  4. There may be more than one way to do things in AWS cloud.  What is covered in this tutorial is "one" of those ways, not necessarily the "best" or the "easy" way.  The purpose is to understand the functionality.  As long as this "one" way helps you to understand the cloud service functionality, mission accomplished.  Feedbacks welcome to improvise the solutions.  
-  4. Free-Tier will not apply when an AWS account is under AWS Organization.  If your Free-Tier disappears, this could be a reason.
-  4. Send feedback to <<TBD>>
-
+  3. There may be more than one way to do things in AWS cloud.  What is covered in this tutorial is "one" of those ways, not necessarily the "best" or the "easy" way.  The purpose is to understand the functionality.  As long as this "one" way helps you to understand the cloud service functionality, mission accomplished.  Feedbacks welcome to improvise the solutions.  
+  4. Free-Tier will not apply when an AWS account is under AWS Organization.  If your Free-Tier disappears, it could be that you added that account under some organization.
+  5. Send feedback to cloud-learn-feedback@everapptech.com.
 
 
 //

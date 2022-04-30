@@ -1,0 +1,9 @@
+{
+    "BudgetLimit": {
+        "Amount": "5",
+        "Unit": "USD"
+    },
+    "BudgetName": "chwbudget",
+    "BudgetType": "COST",
+    "TimeUnit": "MONTHLY"
+}

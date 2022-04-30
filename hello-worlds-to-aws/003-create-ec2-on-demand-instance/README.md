@@ -1,13 +1,15 @@
 # Create EC2 instance
-The objective of this sample is to create ec2 instance using AWS CLI and access it using ssh.
+Amazon Elastic Compute Cloud (Amazon EC2) is a cloud service for launching and managing Linux/UNIX and Windows Server instances in Amazon data centers.
 
-The instance created here is of type On-Demand from billing perspective.  Something about different billing options here.
+The objective of this sample is to create an ec2 instance (Linux) using AWS CLI and access it using ssh.
+
+The instance created here is of type "On-Demand" from billing perspective.  Something about different billing options here.
 
 | EC2 billing options | Use Cases| Description                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | On-Demand           |  Suitable for near real-time, mission critical workloads.   For e.g., your ecommerce sites, running your databases for transactional apps, etc.                                               | Most expensive of all.  No commitment needed from your part.                                                                                                                                                                                      |
 | Spot           | Suitable for batch processing workloads that do not have time pressure, that can withstand failures.  For e.g., running AI application to categorize millions of image files.     | Very cheap as AWS uses unused compute resources for this purpose.    No commitment needed from your part.  Instances will be abruptly reclaimed by AWS with 2min notice if AWS needs to use the compute power for other customers. Variations exist such as you can use spot instances for a defined period of time; You can hibernate spot instance and reinitiate the same.|
-| Reserved           | When usage of instances is sporadic, but overall capacity is known for a period of 1 to 3 years.  For e.g., you'll need large amount of compute during projects performance testing; your business is event based and you'll need servers at the time of event launches; you have multiple AWS accounts and you want to share capactiy among the accounts| Your commitment is needed for the capacity you'll use in a period of time.                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Reserved           | Suitable when the usage of instances is sporadic, but overall capacity is known for a period of 1 to 3 years.  For e.g., you'll need large amount of compute during projects performance testing; your business is event based and you'll need servers at the time of event launches; you have multiple AWS accounts and you want to share capactiy among the accounts.| Your commitment is needed for the capacity you'll use in a period of time.                                                                                                                                                                                                                                                                                                                                                                                                                |
 |   |   |  |
 |   |   |  |
 
@@ -17,6 +19,13 @@ The instance created here is of type On-Demand from billing perspective.  Someth
   1. EC2 instances cost money.  However, t2.micro instance type is available free for 750hours per month for the first 12months under free tier. If not under Free-Tier, On-Demand EC2 t2.micro instance is USD 0.0116 per hour.
   2. You need to use key pair to connect to ec2 instance using SSH.  AWS does not charge for creation and storage of key pairs.  However AWS charges for the API calls.  Free tier allows 20,000 requests/month and this exercise will be well below this limit.  Refer [AWS KMS Pricing](https://aws.amazon.com/kms/pricing/) for further details.
   3. Creating security group does not cost money.  It is not a resource per se. It is a configuration.
+  4. Transferring data into EC2 from internet does NOT cost money.  
+  Note: Transferring out data from EC2 to internet, or other AWS cloud services (e.g., ec2 to s3 bucket in different region) costs money. AWS customers receive 100 GB of free data transfer out to the internet free each month, aggregated across all AWS Services and Regions (except China and GovCloud).
+
+References:
+https://aws.amazon.com/ec2/pricing/on-demand/
+https://aws.amazon.com/blogs/architecture/overview-of-data-transfer-costs-for-common-architectures/
+https://aws.amazon.com/blogs/architecture/exploring-data-transfer-costs-for-aws-managed-databases/
 
 ## Something to note
 It is important to note that some of the AWS services are global and some are regional.  EC2 service is regional.  If you don't see the ec2 instance that you created using CLI in the AWS console, check the region first. ```aws configure list``` will show the region used by aws cli and AWS console will also show the region on the top bar.  If you still don't see the ec2 instance you created, check whether you are using the same account and same user.
@@ -47,7 +56,13 @@ $ aws sts get-caller-identity
 
 ``` 
 
-Import the keypair into AWS.  Note that the public key material is to be uploaded as base64 encoded blob.
+Import the keypair into AWS.  
+
+public-key-material is a blob.  For command line tools, base64 encoding is performed by the cli command itself.
+
+By default in the AWS CLI version 2, files referenced with the file:// prefix are treated as base64-encoded text.
+
+Files referenced using the fileb:// prefix are always treated as raw unencoded binary.  That is why fileb prefix is used here.
 ```
 $ aws ec2 import-key-pair \
     --key-name id_rsa_aws \
@@ -70,9 +85,11 @@ $ aws ec2 describe-key-pairs --query 'KeyPairs[*].KeyName'
 
 You can see thus created key in AWS console under  `Services > EC2 > Network & Security > Key Pairs`.
 
+https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs: 
+
 ### Create Security Group
 
-1. Create security group as below.  Security group is an equivalent of "ufw".  ufw (uncomplicated firewall) can be run as a unix command to do host level control for ports and IPs.  AWS EC2 uses security groups instead of setting firewall rules within ec2 instance using ufw.  It is possible to set ufw firewall rules as well, but it is totally uncessary.  
+1. Create security group as below.  Security group is an equivalent of "ufw", but set external to the host.  ufw (uncomplicated firewall) can be run as a unix command to do host level control for ports and IPs.  AWS EC2 uses security groups instead of setting firewall rules within ec2 instance using ufw.  It is possible to set ufw firewall rules as well, but it is totally unnecessary.  
 ```
 $ aws ec2 create-security-group \
   --group-name myawsec2secgroup \
@@ -145,12 +162,10 @@ $ aws ec2 describe-security-groups --group-names  myawsec2secgroup --query 'Secu
 
 ### Create EC2 instance
 You need to choose an EC2 image in order to create EC2 instance.  Choose one of the free tier eligible images.  You can look for free tier images by looking at AWS console `Services > EC2 > EC2 Dashboard > Launch Instance`
+https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstances: 
 
-  ![console screen shot][ec2-image]
 
-  [ec2-image]: ../common/images/aws-ec2-image.png "ec2-images"
-
-Get to know the details of the image.
+Get to know the details of the image chosen by you.
 ```
  $ aws ec2 describe-images --image-ids ami-0ed9277fb7eb570c9 --query 'Images[*].[ImageLocation,PlatformDetails,Description]'
 
@@ -163,7 +178,7 @@ Get to know the details of the image.
 ]
 ```
 
-Now, you are ready to create an instance.  You'll need to use the ssh key you created, the security group you created, the image you identified to run this command.
+Now, you are ready to create your instance.  You'll need to use the ssh key you created, the security group you created, the image you identified to run this command.
 
 ```
 $ aws ec2 run-instances \
@@ -203,11 +218,15 @@ $ aws ec2 describe-instances  --query 'Reservations[*].Instances[*].{InstanceId:
 
 # SSH to the instance
 SSH to the newly created instance with the public IP you got from the above step after the state turns "running".  You can view the instance in the console by accessing `Services > EC2 > EC2 Dashboard`
+
+https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#Home: 
+
+Execute the below command from your laptop.
 ```
-ssh -i id_rsa_aws ec2-user@52.87.158.51
+$ ssh -i id_rsa_aws ec2-user@52.87.158.51
 ```
 
-Voila!! EC2 instance created!!
+Voila!! EC2 instance created!! You have a machine on the Cloud!!
 
 ## Destroy the resources created
 
@@ -252,19 +271,19 @@ Terminated instances will be there in AWS for sometime and then they disappear.
 
 
 ```
-aws ec2 delete-key-pair --key-name id_rsa_aws 
+$ aws ec2 delete-key-pair --key-name id_rsa_aws 
 ```
 
 ### Destroy the security group
 
 ```
- aws ec2 delete-security-group --group-name myawsec2secgroup
+ $ aws ec2 delete-security-group --group-name myawsec2secgroup
 ```
 
 ## Additional info
 
 ### How to use AWS Key pair instead of your own?
-You can create key pair within AWS also using below command and get the key locally to connect to ec2 via ssh.
+You can create key pair within AWS using below command and get the key locally to connect to ec2 via ssh.
 ```
 $ aws ec2 create-key-pair --key-name myawssshkey --query 'KeyMaterial' --output text > myawssshkey.pem
 
@@ -277,5 +296,3 @@ $ aws ec2 describe-key-pairs --query 'KeyPairs[*].KeyName'
 # To delete the key
 $ aws ec2 delete-key-pair --key-name myawssshkey
 ```
-
-

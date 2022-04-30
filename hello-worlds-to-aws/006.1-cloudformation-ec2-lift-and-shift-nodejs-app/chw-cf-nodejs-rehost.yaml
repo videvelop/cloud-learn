@@ -1,0 +1,27 @@
+Resources:
+  reschwcfs3bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "chwcfs3bucket"
+      Tags: 
+        - Key: "CHWCREATOR"
+          Value: "CF-EC2-S3.YAML Cloudformation"
+        - Key: "DELETETIME"
+          Value: "immediate"
+  chwcfs3bucketpolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref reschwcfs3bucket
+      PolicyDocument:
+        Id:  chwcfpolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: ChwCfPublicRead
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref reschwcfs3bucket 
+                - /*

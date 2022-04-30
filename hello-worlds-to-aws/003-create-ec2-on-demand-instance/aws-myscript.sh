@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 . ./aws-service.env
 echo  AMI image id to be used is $AMI_IMAGE_ID
