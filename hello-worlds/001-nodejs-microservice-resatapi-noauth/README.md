@@ -9,9 +9,3 @@ npm run start
 ```
 
 http://localhost:9001 will serve the microservices.
-
-user: abc1@abc.com
-password: pw1
-
-user: abc2@abc.com
-password: pw2

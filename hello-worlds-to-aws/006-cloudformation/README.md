@@ -100,3 +100,12 @@ $ aws cloudformation execute-change-set --change-set-name chwcfstackchangeset --
 ```
 
 Check the bucket permission and note that the principal is changed.
+
+# Additional samples
+There are some more json or yaml cloudformation files given.  Those can be used to create/destroy stacks.
+
+For e.g., to create keypair and destroy the same use the following commands.
+```
+$ aws cloudformation create-stack --stack-name chwcfkp --template-body file://chw-cf-ec2-keypair.json 
+$ aws cloudformation delete-stack --stack-name chwcfkp 
+```

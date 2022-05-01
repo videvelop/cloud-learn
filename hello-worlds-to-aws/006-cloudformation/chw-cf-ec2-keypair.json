@@ -1,0 +1,11 @@
+{
+    "Resources": {
+        "CHWKeypair": {
+            "Type": "AWS::EC2::KeyPair",
+            "Properties": {
+                "KeyName": "chwcfec2nodejsrehost",
+                "PublicKeyMaterial": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBkvgjiF53fPBDCbtV14X6MOJ05TYvQfAbBe4I7b8QRmQndNZSJT8ShzUPo8mo4nKigEpHNgJ6/ceY3Y6KFKvyduZF0vOo+WUnHjD6sRNHqi+AIV0a6LlZthwGVTX+4ILXwRtw/fLyTQeCPCKAIU+vsyZsocaZ96oWBxzy2LCObqqp8VFJtuWIm7RYrwYDrsc/1yBu7s+kXTJQP9GVbXkJh2fyAq3o0PA7zkn76q9uFbSAkTlgF5Vom1OvziMdLAxEH/x1+LNMy7wDMeJZmW4ZwfYPMvS0w+XMcQt0TuqfxBgMwyKWa8MCu4nS518Zt/cJlcEFpihfMkvaVYsU1C1alxeiOb6+D3y70VO/jRLgofo+SjAAejQD9ALwmIhIcoZWBoJiAnqZAIOqqMXR8f4tOcrQV+7mMrSdF3yodT0hG4WQ0m1x1KwvflyVFeZl0iqL1E1ge3GeNWLnrh95ijmZw8ph4bnyMgU439wsJ3OFqr52pVgrF3eMAhLa6s3mOyE= vimala@LAPTOP-MN5N48F6"
+            }
+        }
+    }
+}
