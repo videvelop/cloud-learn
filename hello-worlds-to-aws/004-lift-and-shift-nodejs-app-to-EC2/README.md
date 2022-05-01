@@ -40,12 +40,12 @@ $ nvm --version
 Git clone the sample app code or use your own app code.  Copy the source from your machine to ec2 instance. The below steps are to be run in your desktop / laptop machine. 
 ```
 $ cd cloud-learn/hello-worlds
-$ scp -r -i ~/.ssh/id_rsa_aws 001-nodejs-microservice-resatapi-noauth ec2-user@ec2-3-89-254-202.compute-1.amazonaws.com:~/wrk/
+$ scp -r -i ~/.ssh/id_rsa_aws 001-nodejs-microservice-restapi-noauth ec2-user@ec2-3-89-254-202.compute-1.amazonaws.com:~/wrk/
 ```
 
 In the ec2 instance, npm install and run the app
 ```
-$ cd ~/wrk/001-nodejs-microservice-resatapi-noauth
+$ cd ~/wrk/001-nodejs-microservice-restapi-noauth
 $ npm i
 $ node server-app-noauth.js 
 $ curl http://localhost:9001
