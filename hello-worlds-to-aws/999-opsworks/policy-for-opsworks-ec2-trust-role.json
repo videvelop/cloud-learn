@@ -1,0 +1,20 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ec2:*",
+          "s3:*",
+          "opsworks:*",
+          "iam:PassRole"
+        ],
+        "Resource": "arn:aws:ec2:us-east-1:024172920014:instance/*",
+        "Condition": {
+          "StringEquals": {
+            "iam:PassedToService": "opsworks.amazonaws.com"
+          }
+        }
+      }
+    ]
+  }

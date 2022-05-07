@@ -3,20 +3,9 @@
         "CHWEC2NodejsRehost": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
-                "UserData" : {
-                    "Fn::Base64" : { "Fn::Join" : ["", [
-"#!/bin/bash -xe",
-"yum update -y ",
- "curl --silent --location https://rpm.nodesource.com/setup_14.x |bash - ",
- "yum install yarn nodejs -y ",
- "yum install git -y ",
- "git clone https://github.com/videvelop/cloud-learn.git ",
- "cd cloud-learn/hello-worlds/001-nodejs-microservice-restapi-noauth/ ",
- "npm install ",
- "npm run start"
-
-                    ]]}}
-
+                "UserData": {
+                    "Fn::Base64": { "Fn::Sub": "#!/bin/bash\n yum update -y \n curl --silent --location https://rpm.nodesource.com/setup_14.x |bash - \n yum install yarn nodejs -y \n yum install git -y \n git clone https://github.com/videvelop/cloud-learn.git \n cd cloud-learn/hello-worlds/001-nodejs-microservice-restapi-noauth/ \n npm install \n npm run start &\n"
+                    }
                 },
             "ImageId" : "ami-0f9fc25dd2506cf6d",
             "KeyName" : { "Ref" : "CHWKeypair" },

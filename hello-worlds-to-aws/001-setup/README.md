@@ -35,7 +35,7 @@ OS: Ubuntu 20.04.3 LTS x86_64
 (operate as dual boot linux machine or windows 11 with windows subsystem for linux)
 
 
-`AWS-PRICE` for this setup:
+## `AWS-PRICE` for this setup:
   - IAM is free.  It does not cost any money to create users, user groups and permissons for the users.
   
   ### Register and Create Users
@@ -172,7 +172,8 @@ $ aws budgets describe-budgets --account-id 0nnnnnnnnn14
   2. AWS CLI gives output in json, yaml, text formats.  By default, this tutorial uses json output format.  AWS uses JMESPath query language to filter out json output at client side using "--query" option.  This tutorial uses --query option in aws cli commands to make the outputs shorter and easier to read. You can remove that option and run the queries for full blown output.  
   It is highly recommended to pickup JMESPath skill.  Refer https://jmespath.org/ .
   3. There may be more than one way to do things in AWS cloud.  What is covered in this tutorial is "one" of those ways, not necessarily the "best" or the "easy" way.  The purpose is to understand the functionality.  As long as this "one" way helps you to understand the cloud service functionality, mission accomplished.  Feedbacks welcome to improvise the solutions.  
-  4. Free-Tier will not apply when an AWS account is under AWS Organization.  If your Free-Tier disappears, it could be that you added that account under some organization.
+  4. Free-Tier will not apply when an AWS account is under an AWS Organization.  If your Free-Tier disappears, it could be that you added your account under some organization.
+  5. All the `AWS-PRICE` information given in these exercises are for us-east-1 region unless explicitly stated otherwise.
   5. Send feedback to cloud-learn-feedback@everapptech.com.
 
 

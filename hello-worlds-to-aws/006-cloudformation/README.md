@@ -32,7 +32,7 @@ Resources:
       BucketName: "chwcfs3bucket"
 ```
 
-Below is a complete cloudformation template to create bucket with a policy giving permission for all to read.  It uses some intrinsic function such as !Join  (used as "Fn::Join" in json).  !Join joins a given list of parameters with delimiter.  The intrinsic function Ref returns the value of the specified parameter or resource.
+Below is a complete cloudformation template to create bucket with a policy giving permission for all to read.  It uses some intrinsic function such as `!Join`  (used as `Fn::Join` in json).  `!Join` joins a given list of parameters with delimiter.  The intrinsic function `Ref` returns the value of the specified parameter or resource.
 
 ```
 Resources:

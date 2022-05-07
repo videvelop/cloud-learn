@@ -9,9 +9,8 @@ To lift and shift nodejs webapp, you need to create an EC2 instance and install 
    4. Configure security group to open up the port the web app is using
    5. Send requests from browser client to access the webapp
 
-## AWS-PRICE
-`AWS-PRICE` for this hands-on exercise:
-  1. EC2 instance price applies here.
+## `AWS-PRICE` for this exercise
+  1. EC2 instance price only as we create instance and ssh into it to install/ use nodejs.
 
 ## Create EC2 instance
 Follow the instructions given in [003-create-ec2-on-demand-instance](../003-create-ec2-on-demand-instance) to create EC2 instance and ssh into it.

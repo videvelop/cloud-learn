@@ -25,7 +25,7 @@ Refer: https://aws.amazon.com/s3/pricing/
 4. Some monitoring can be enabled on S3 Storage to intelligently move objects across storage classes.  This monitoring incurs cost. 
 
 
-## `AWS-PRICE` for this sample
+## `AWS-PRICE` for this exercise
 
   1.  AWS Free-tier customers get 5GB of Amazon S3 storage in the S3 Standard storage class; 20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests; and 100 GB of Data Transfer Out each month.  If you are in free-tier, it costs nothing.
   2.  If you are not in free tier, since this exercise just requires few PUT/GET/LIST request and 2 or 3 sample files with 1MB or less (assuming your sample RDB backup file is small) , the cost will be few cents.  
@@ -65,7 +65,7 @@ upload: folder/subfolder/file2 to s3://chw-sample-bkt1/subfolder/file2
 
 ```
 
-## Retrieve objects from bucket to your laptop
+## Retrieve objects from the bucket to your laptop
 
 ```
 $ cd /tmp/
@@ -91,7 +91,7 @@ The steps involved are:
 4. Restore the backup to ec2's mariadb.  Get the DB up and running in EC2.  
 RDB (e.g., mariadb) installation, backup, restore commands are not covered in detail in this sample.  The only step unknown to you after finishing all the prior exercises is how to download the backup from s3 to ec2.  We shall go through that here.
 
-If you have docker, you may try the following to create Maria DB and take a backup to restore in ec2 instance.
+If you have docker, you may try the following to create Maria DB and take a backup in your laptop. 
 ```
 $ docker run --detach --name some-mariadb --env MARIADB_USER=example-user --env MARIADB_PASSWORD=my_cool_secret --env MARIADB_ROOT_PASSWORD=my-secret-pw -p 3306:3306  mariadb:latest
 $ mysql --host=127.0.0.1 --user root  --password=my-secret-pw << END
@@ -121,7 +121,7 @@ The better way is to create a role and make EC2 assume that role.  This role wil
 ### How to create S3 bucket in EC2 to download the backup?
 The steps for this are:
 1. Create instance profile that you can attach to an instance.  You can use this instance profile at the time of creating the instance or attach it when instance is running.
-2. This instance profile will need to have a "role" and that role will have the required S3 bucket read permissions.
+2. This instance profile is nothing but a "role" but has a explicit use that it can be attached to instances, and it requires some extra steps to create and manage.  Make this role have the required S3 bucket read permissions.
 3. For an AWS Service (such as EC2) to assume a role, the role has to be defined with "trust relationship".  Trust relationship  specifies which principals (EC2 in this case) can assume the role, and under which conditions. "trust relationship" is sometimes referred to as a resource-based policy for the IAM role. We’ll refer to this policy simply as the ‘trust policy’.
 
 1. So, let's first create "trust policy".
@@ -148,7 +148,7 @@ $ aws iam create-role --role-name ec2-read-s3-backup-role --assume-role-policy-d
 ```
 3. Associate S3 bucket read permissions to this role.  
 
-Note that you cannot have a space before the beginning curly braces "{" in this document you edit.  There seems a bug yet to be fixed in aws cli. Ref: https://github.com/99designs/iamy/issues/65 
+Note that you cannot have a space before the beginning curly braces "{" in this document you edit.  There is a bug that is yet to be fixed in aws cli. Ref: https://github.com/99designs/iamy/issues/65 
 ```
 $ vi s3-bucket-read-permission.json
 {
@@ -175,7 +175,7 @@ $ aws iam put-role-policy --role-name ec2-read-s3-backup-role --policy-name s3-b
 $ aws iam create-instance-profile --instance-profile-name ec2-instance-profile-s3-read-backup
 ```
 
-5. Add role to the instance profile.
+5. Add the role created above to the instance profile.
 ```
 aws iam add-role-to-instance-profile --instance-profile-name ec2-instance-profile-s3-read-backup --role-name ec2-read-s3-backup-role
 

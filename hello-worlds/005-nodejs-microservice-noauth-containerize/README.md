@@ -105,9 +105,21 @@ The steps for this are:
 2. This instance profile will need to have a "role" and that role will have the required S3 bucket read permissions.
 3. For an AWS Service (such as EC2) to assume a role, the role has to be defined with "trust relationship".  Trust relationship  specifies which principals (EC2 in this case) can assume the role, and under which conditions. "trust relationship" is sometimes referred to as a resource-based policy for the IAM role. We’ll refer to this policy simply as the ‘trust policy’.
 
+TBD soem text 
+
+  ![console1 screen shot][iam-ec2-instance-profile]
+
+  [iam-ec2-instance-profile]: ../common/images/aws-chw-instance-profile-trust-policy.png "iam-ec2-instance-profile"
+
+some text
+
+  ![console screen shot][iam-credential]
+
+  [iam-credential]: ../common/images/aws-chw-org-admin1-user-credentials.png "iam-programmatic-access"
+
 1. So, let's first create "trust policy".
   ```
-  $ vi ec2-trust-policy.json
+  $ cat ec2-trust-policy.json
   {
     "Version": "2012-10-17",
   "Statement": [
@@ -131,7 +143,7 @@ $ aws iam create-role --role-name ec2-read-s3-backup-role --assume-role-policy-d
 
 Note that you cannot have a space before the beginning curly braces "{" in this document you edit.  There seems a bug yet to be fixed in aws cli. Ref: https://github.com/99designs/iamy/issues/65 
 ```
-$ vi s3-bucket-read-permission.json
+$ cat s3-bucket-read-permission.json
 {
     "Version": "2012-10-17",
     "Statement": [

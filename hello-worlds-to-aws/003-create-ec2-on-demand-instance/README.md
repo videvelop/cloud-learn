@@ -1,7 +1,7 @@
 # Create EC2 instance
 Amazon Elastic Compute Cloud (Amazon EC2) is a cloud service for launching and managing Linux/UNIX and Windows Server instances in Amazon data centers.
 
-The objective of this sample is to create an ec2 instance (Linux) using AWS CLI and access it using ssh.
+The objective of this exercise is to create an ec2 instance (Linux) using AWS CLI and access it using ssh.
 
 The instance created here is of type "On-Demand" from billing perspective.  Something about different billing options here.
 
@@ -15,9 +15,9 @@ The instance created here is of type "On-Demand" from billing perspective.  Some
 
 
 
-`AWS-PRICE` for this hands-on exercise:
-  1. EC2 instances cost money.  However, t2.micro instance type is available free for 750hours per month for the first 12months under free tier. If not under Free-Tier, On-Demand EC2 t2.micro instance is USD 0.0116 per hour.
-  2. You need to use key pair to connect to ec2 instance using SSH.  AWS does not charge for creation and storage of key pairs.  However AWS charges for the API calls.  Free tier allows 20,000 requests/month and this exercise will be well below this limit.  Refer [AWS KMS Pricing](https://aws.amazon.com/kms/pricing/) for further details.
+## `AWS-PRICE` for this exercise
+  1. EC2 instances cost money.  However, t2.micro instance type is available free for 750hours per month for the first 12months under free tier. If not under Free-Tier, On-Demand EC2 t2.micro instance is USD 0.0116 per hour in us-east-1 region.
+  2. You need to use key pair to connect to ec2 instance using SSH.  AWS does not charge for creation and storage of these SSH key pairs.  There is another service called AWS Key Management Service (KMS).  The keys talked about in KMS are for encryption, digital signing and such, but not for SSH per se.  Ref: https://stackoverflow.com/questions/62451200/can-a-kms-keypair-be-registered-in-the-ec2-keypair  
   3. Creating security group does not cost money.  It is not a resource per se. It is a configuration.
   4. Transferring data into EC2 from internet does NOT cost money.  
   Note: Transferring out data from EC2 to internet, or other AWS cloud services (e.g., ec2 to s3 bucket in different region) costs money. AWS customers receive 100 GB of free data transfer out to the internet free each month, aggregated across all AWS Services and Regions (except China and GovCloud).
@@ -72,8 +72,9 @@ $ aws ec2 import-key-pair \
     "KeyName": "id_rsa_aws",
     "KeyPairId": "key-02e32d41b98769876"
 }
-
 ```
+
+When instance boots for the first time, the public key is placed into ec2 instance in an entry within ~/.ssh/authorized_keys. When you connect to ec2 instance using SSH, you must specify the private key.
 
 Validate whether the key is successfully imported.
 ```
@@ -82,10 +83,8 @@ $ aws ec2 describe-key-pairs --query 'KeyPairs[*].KeyName'
     "id_rsa_aws"
 ]
 ```
-
 You can see thus created key in AWS console under  `Services > EC2 > Network & Security > Key Pairs`.
-
-https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs: 
+https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs: is the link for the same.
 
 ### Create Security Group
 
