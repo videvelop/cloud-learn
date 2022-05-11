@@ -1,34 +1,34 @@
 # S3 - How to store/retrieve your backup files in S3?
-You have learnt to create ec2 instance by now. Let's get into another very important storage service - S3.
+You have learnt to create ec2 instance by now. Let's get into an important storage service now - S3.
 
-In this sample we'll store RDS (say MariaDB) backup taken from on-prem server to S3, and retrieve the same from S3 to EC2. This is one easy way to lift-and-shift (Rehost) DB from onprem to cloud.  This migration from on-prem to cloud requires DB downtime to have perfectly sync'ed data.  Later, we'll have exercises using AWS Database Migration Service that'll avoid DB downtime. 
+In this sample we'll store RDS (say MariaDB) backup taken from onprem server in S3, and retrieve from S3 to EC2. This is one easy lift-and-shift (Rehost) way to migrate DB from onprem to cloud.  This requires DB downtime to have perfectly sync'ed data.  Later, we'll have sample using AWS Database Migration Service that'll avoid DB downtime.  
 
-S3 is object storage, suitable for storing 
-1. backups, 
-2. hosting static/dynamic web sites, 
-3. storing and delivering media files.  
-S3 is NOT suitable (not possible) for installing applications and run from this storage by attaching to EC2; NOT suitable as DB installation data files.
+S3 is of "object" storage type. It is suitable for storing backups, hosting static/dynamic web sites, media files.  S3 is NOT suitable (not possible) for installing applications and run from this storage by attaching to EC2; Not suitable as DB installation storage.
 
-S3 doesn't have a concept of directory/folder and files. It has "objects" with "key" and "contents".  It also has "metadata" for objects. What appears to be a folder is actually an object without any contents.  What appears to be a folder path is the "key".
+S3 doesn't have a concept of directory/folder and files. It has "objects" with "key" and "contents".  It also has "metadata" for objects. What appears to be a folder is actualy an object without any contents.  What appears to be folder path is the "key".
 
-Elastic Block Storage (EBS) and Elastic File Storage (EFS) are to be used for binary installations and database data files.  More on EFS and EBS later in other exercises.
+Elastic Block Storage (EBS) and Elastic File Storage (EFS) are to be used for binary installations and database data files.  More on EFS and EBS later in other samples.
 
 S3 storage is regional.  However, S3 bucket name must be unique globally.
 
-S3 is stored in different classes and each class offers some price benefits. Refer: https://aws.amazon.com/s3/storage-classes/
+S3 is stored in different classes and each class offers some price related benefits. Refer: https://aws.amazon.com/s3/storage-classes/
 
 Following factors influence AWS pricing for S3.
-1. Total size of objects stored in S3
-2. S3 storage class.  For e.g., S3 Glacier Deep Archive is the cheapest (USD 0.00099 per GB per month) and it takes the longest (may take upto 12 hours) to retrieve.  S3 Standard costs more (USD 0.023 per GB per month) because it offers low latency, high throughput storage.
-3. Transferring data in and out of S3 (whether it is from outside AWS cloud or within AWS cloud.  For e.g., replicating S3 bucket from one region to the other costs transfer-out rate and also transfer-in (PUT request) rates.)
+1. Size of the objects stored in S3
+2. S3 storage class.  For e.g., 
+- S3 Glacier Deep Archive is the cheapest (USD 0.00099 per GB per month) and it takes the longest (may take upto 12 hours) to retrieve.  
+- S3 Standard costs more (USD 0.023 per GB per month) because it offers low latency, high throughput storage.
+3. Transferring data in and out of S3 (whether it is from outside AWS cloud or within AWS cloud costs money.  For e.g., replicating S3 bucket from one region to the other costs transfer-out rate and also transfer-in (PUT request) rates.)
 Refer: https://aws.amazon.com/s3/pricing/
 4. Some monitoring can be enabled on S3 Storage to intelligently move objects across storage classes.  This monitoring incurs cost. 
 
+In sum, S3 storage type, amount of data stored, amount of data transferred-in and out, monitoring S3 objects for life cycle management all cost money.
 
-## `AWS-PRICE` for this exercise
+
+## `AWS-PRICE` for this sample
 
   1.  AWS Free-tier customers get 5GB of Amazon S3 storage in the S3 Standard storage class; 20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests; and 100 GB of Data Transfer Out each month.  If you are in free-tier, it costs nothing.
-  2.  If you are not in free tier, since this exercise just requires few PUT/GET/LIST request and 2 or 3 sample files with 1MB or less (assuming your sample RDB backup file is small) , the cost will be few cents.  
+  2.  If you are not in free tier, since this exercise just requires few PUT/GET/LIST request and 2 or 3 sample files with 1MB (assuming your sample RDB backup file is small) or less content size, the cost will be few cents.  
   3.  You'll need to use an EC2 instance to restore the backup and install RDB in that EC2.  For Free Tier, t2.micro instance can be used free of cost. Otherwise, it'd cost USD 0.0116 per hour.
   4.  If you are not in Free Tier and if you finish this exercise within an hour, this exercise would cost less than USD 0.03.
    
@@ -38,8 +38,6 @@ $ aws s3api create-bucket --bucket chw-sample-bkt1
 {
     "Location": "/chw-sample-bkt1"
 }
-
-# check whether this bucket is created
 $ aws s3api list-buckets --query 'Buckets[*].Name'
 [
     "chw-sample-bkt1"
@@ -65,7 +63,7 @@ upload: folder/subfolder/file2 to s3://chw-sample-bkt1/subfolder/file2
 
 ```
 
-## Retrieve objects from the bucket to your laptop
+## Retrieve objects from bucket to your laptop
 
 ```
 $ cd /tmp/
@@ -85,33 +83,16 @@ file2
 ```
 ## Migrate RDB (something like mariadb)
 The steps involved are:
-1. Create RDB backup such as mariadb backup using mysqldump or any such utility in on-prem server.
+1. Create mariadb backup using mysqldump in on-prem server.
 2. Upload the backup to S3
 3. Download the backup into ec2
 4. Restore the backup to ec2's mariadb.  Get the DB up and running in EC2.  
-RDB (e.g., mariadb) installation, backup, restore commands are not covered in detail in this sample.  The only step unknown to you after finishing all the prior exercises is how to download the backup from s3 to ec2.  We shall go through that here.
-
-If you have docker, you may try the following to create Maria DB and take a backup in your laptop. 
-```
-$ docker run --detach --name some-mariadb --env MARIADB_USER=example-user --env MARIADB_PASSWORD=my_cool_secret --env MARIADB_ROOT_PASSWORD=my-secret-pw -p 3306:3306  mariadb:latest
-$ mysql --host=127.0.0.1 --user root  --password=my-secret-pw << END
-drop database s3test; 
-create database s3test;
-show databases;
-END
-$ mysql --host=127.0.0.1 --user example-user --password=my_cool_secret --database=s3test << END
-create or replace table s3testtbl (name char(10), id int);
-insert into  s3testtbl (name, id) values ("john", 101), ("peter", 102), ("sam", 103);
-commit;
-select * from s3testtbl;
-END
-$ mysqldump --host=127.0.0.1 --user root  --password=my-secret-pw s3test  > mysqlbkup.sql
-```
+RDB (e.g., mariadb) installation, backup, restore commands are not covered in this sample.  The only step unknown to you after finishing all the prior exercises is how to download the backup from s3 to ec2.  We shall go through that here.
 
 ## How to get S3 object into EC2
 Simply put, EC2 instance should have some permissions to access the S3 bucket.  Tha permission is given to EC2 through IAM "Role" that the EC2 needs to assume.  
 
-In the same way laptop OS accesses S3, EC2 can also be provided with AWS user credentials to access the S3 buckets and the objects.  But it is a bad practice for the following reasons.
+In the same way laptop OS accesses S3, EC2 can also be provided with AWS user credentials to access the S3 buckets and the objects.  But it is bad for the following reasons.
 1. You need to create IAM user account with programmatic access credentials for EC2 to use.  It is not secure as the credentials are to be shared with multiple users using ec2.  Accountability is lost.
 2. It is difficult to manage also.  If the credentials change, then all the users are to be notified with those credentials and/or all the EC2 are to be reconfigured with the changed credentials if any automatic config set up is there.
 
@@ -121,12 +102,24 @@ The better way is to create a role and make EC2 assume that role.  This role wil
 ### How to create S3 bucket in EC2 to download the backup?
 The steps for this are:
 1. Create instance profile that you can attach to an instance.  You can use this instance profile at the time of creating the instance or attach it when instance is running.
-2. This instance profile is nothing but a "role" but has a explicit use that it can be attached to instances, and it requires some extra steps to create and manage.  Make this role have the required S3 bucket read permissions.
+2. This instance profile will need to have a "role" and that role will have the required S3 bucket read permissions.
 3. For an AWS Service (such as EC2) to assume a role, the role has to be defined with "trust relationship".  Trust relationship  specifies which principals (EC2 in this case) can assume the role, and under which conditions. "trust relationship" is sometimes referred to as a resource-based policy for the IAM role. We’ll refer to this policy simply as the ‘trust policy’.
+
+TBD soem text 
+
+  ![console1 screen shot][iam-ec2-instance-profile]
+
+  [iam-ec2-instance-profile]: ../common/images/aws-chw-instance-profile-trust-policy.png "iam-ec2-instance-profile"
+
+some text
+
+  ![console screen shot][iam-credential]
+
+  [iam-credential]: ../common/images/aws-chw-org-admin1-user-credentials.png "iam-programmatic-access"
 
 1. So, let's first create "trust policy".
   ```
-  $ vi ec2-trust-policy.json
+  $ cat ec2-trust-policy.json
   {
     "Version": "2012-10-17",
   "Statement": [
@@ -148,9 +141,9 @@ $ aws iam create-role --role-name ec2-read-s3-backup-role --assume-role-policy-d
 ```
 3. Associate S3 bucket read permissions to this role.  
 
-Note that you cannot have a space before the beginning curly braces "{" in this document you edit.  There is a bug that is yet to be fixed in aws cli. Ref: https://github.com/99designs/iamy/issues/65 
+Note that you cannot have a space before the beginning curly braces "{" in this document you edit.  There seems a bug yet to be fixed in aws cli. Ref: https://github.com/99designs/iamy/issues/65 
 ```
-$ vi s3-bucket-read-permission.json
+$ cat s3-bucket-read-permission.json
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -175,7 +168,7 @@ $ aws iam put-role-policy --role-name ec2-read-s3-backup-role --policy-name s3-b
 $ aws iam create-instance-profile --instance-profile-name ec2-instance-profile-s3-read-backup
 ```
 
-5. Add the role created above to the instance profile.
+5. Add role to the instance profile.
 ```
 aws iam add-role-to-instance-profile --instance-profile-name ec2-instance-profile-s3-read-backup --role-name ec2-read-s3-backup-role
 
@@ -209,7 +202,7 @@ $ aws s3 cp s3://chw-sample-bkt1/m.backup .
 download: s3://chw-sample-bkt1/m.backup to ./m.backup   
 ```
 
-Now that the backup file is available in EC2, use that to set up your RDB in an ec2 instance with on-prem database copy. You can install docker in ec2 and install a database and restore this backupfile into that docker instance of the database.
+Now that the backup file is available in EC2, use that to set up your RDB with on-prem database copy.
 
 ## Destroy the services using AWS console
   1. Stop & terminate the instance 
@@ -219,7 +212,7 @@ Now that the backup file is available in EC2, use that to set up your RDB in an 
   5. Empty the s3 bucket and Delete s3 bucket
 
 ## Additional info
-Your database size for real projects' dev/test/prod needs may be higher.  In that case, there is an option to use multi-part-load in S3.  Explore it further.  Starting point is given here. 
+Your database size for real projects' dev/test/prod needs may  be higher.  In that case, there is an option to use multi-part-load in S3.  Explore it further.  Starting point is given here. 
 ```
 $# For large files, use multi-part load
 $ aws s3api create-multipart-upload --bucket chw-sample-bkt1 --key large_test_file
