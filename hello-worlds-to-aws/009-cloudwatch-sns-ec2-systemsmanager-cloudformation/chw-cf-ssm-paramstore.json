@@ -1,0 +1,23 @@
+{
+    "Parameters": {
+        "cwconfig": {
+            "Type": "String",
+            "Description": "Cloudwatch agent config file"
+        }
+    },
+    "Resources": { 
+        "BasicParameter": {
+            "Type": "AWS::SSM::Parameter",
+            "Properties": {
+                "Name": "AmazonCloudWatch-CHW-AmazonLinux2",
+                "Type": "String",
+                "Value": { "Ref" : "cwconfig"},
+                "Description": "Cloud-hello-worlds cloudwatch agent config file",
+                "Tags": {
+                    "CHW": "CHWCW",
+                    "CHWType": "CHWCWAgentFile"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,115 @@
+{
+    "Parameters": {
+        "awsExampleManagedPolicyParameterOne": {
+            "Type": "String",
+            "Description": "ARN of the first IAM Managed Policy to add to the role",
+            "Default": "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+        },
+        "awsExampleManagedPolicyParameterTwo": {
+            "Type": "String",
+            "Description": "ARN of the second IAM Managed Policy to add to the role",
+            "Default": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+        }
+    },
+    "Resources": { 
+        "CHWEC2CWAgentSSM": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "Tags" : [
+                    {
+                       "Key" : "CHW",
+                       "Value" : "CHWCW"
+                    },
+                    {
+                       "Key" : "CHWTag",
+                       "Value" : "chwtagvalue"
+                    }
+                 ],
+                "ImageId": "ami-0022f774911c1d690",
+                "KeyName": {
+                    "Ref": "CHWKeypair"
+                },
+                "InstanceType": "t2.micro",
+                "SecurityGroups": [
+                    {
+                        "Ref": "CHWSecGroup"
+                    }
+                ],
+                "IamInstanceProfile": "CHWCWInstanceProfile"
+            },
+            "DependsOn": [
+                "CHWSecGroup",
+                "CHWKeypair"
+            ]
+        },
+        "CHWSecGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Enable SSH access via port 22 and nodejs port",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": 22,
+                        "IpProtocol": "tcp",
+                        "ToPort": 22
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": 9001,
+                        "IpProtocol": "tcp",
+                        "ToPort": 9001
+                    }
+                ]
+            }
+        },
+        "CHWKeypair": {
+            "Type": "AWS::EC2::KeyPair",
+            "Properties": {
+                "KeyName": "chwcfec2nodejsrehost",
+                "PublicKeyMaterial": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/AExiv3mJVliliYYQss1o1sAfujxvU5jg69FI8DOM0t8/Bb4ycR1Q1UiZpTTkddtdhrItcYJNU/tY4zj7t2wb/CzreeewvOTE7J1d4gU27GBCECCDZLzKicvMpr0IR3rq504krfS7ISt5/VcyiZLLOwud3PqNP3k7a2qgO8ZAOF19dliQa6PuHIIO3o/hmBp1CkX/TI+GUJ9SwD6qQ4WD+2qAg8VX9W4BQEVUrfHf36g+UmPsvst0AnVgkRA3LqeaRU4iJDna7vp9mZTW93GaV+loHLcQbYvWpXQ6Vis3rbsYOPiVY+5Bn2WD/K8UBfLlnJQMEFHpx1NPNqLjpENeUxdT09YqTtJfPVWaXObByTAbQVllyjiXGgDx/Em0ekle3AEQJaZww2Dt23EyXfyf+vdh81xAXx0D4EM33kC5DTi2Wd5ZXc03FS8VUQTbXMF/oHN+P91S20IEoSp8o5xm9Rm78j7OaEYmqfCfh+tb+lb8yYjpfoupNiugxTWhfwU= vimala@LAPTOP-MN5N48F6"
+            }
+        },
+        "CHWEC2CWAgentSMTrustRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ec2.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "ManagedPolicyArns": [
+                    {
+                        "Ref": "awsExampleManagedPolicyParameterOne"
+                    },
+                    {
+                        "Ref": "awsExampleManagedPolicyParameterTwo"
+                    }
+                ]
+            }
+        },
+        "CHWCWEC2InstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "InstanceProfileName": "CHWCWInstanceProfile",
+                "Path": "/",
+                "Roles": [
+                    {
+                        "Ref": "CHWEC2CWAgentSMTrustRole"
+                    }
+                ]
+            }
+        }
+    }
+}

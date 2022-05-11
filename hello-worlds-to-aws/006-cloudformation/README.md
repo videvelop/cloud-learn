@@ -7,8 +7,8 @@ In this exercise, we'll create S3 bucket, IAM roles for the EC2 to access that S
 
 Cloudformation  terminologies.
 Template - JSON or YAML declarative code file that describes the intended state of all resources user wants to create. 
-Stack - AWS creates cloudformation stack as per the resources outlined in the json or yam template file.
-Change set - if any changes are initiated by the user on the stack. User can preview and execute the same.
+Stack - AWS creates cloudformation stack as per the resources outlined in the json or yaml template file.
+Change set - if any changes are required by the user on the stack, those can be specified as json or yaml file. User can preview and execute the same.
 Stack set - a group of stacks
 
 `AWS-PRICE` for this hands-on exercise:
@@ -42,8 +42,8 @@ Resources:
       BucketName: "chwcfs3bucket"
       Tags: 
         - Key: "CHWCREATOR"
-          Value: "CF-EC2-S3.YAML Cloudformation"
-        - Key: "DELETETIME"
+          Value: "CHWTUTORIAL"
+        - Key: "CHWDELETETIME"
           Value: "immediate"
   chwcfs3bucketpolicy:
     Type: 'AWS::S3::BucketPolicy'
@@ -66,6 +66,7 @@ Resources:
 
 The above is already saved in the file chw-cf-s3.yaml.  Use that file to create cloudformation stack with the command below.
 
+Run this in your laptop.
 ```
 $ aws cloudformation create-stack --stack-name chwcfstack --template-body file://chw-cf-s3.yaml
 {

@@ -9,10 +9,23 @@ CloudWatch helps to gain complete visibility of your AWS resources, applications
 ## `AWS-PRICE` for this exercise
 1. EC2 Basic monitoring is free.  EC2 Detailed monitoring costs money.  Detailed monitoring gives data points on metrics every 1 min and basic monitoring gives every 5min.
 2. Cloudwatch pricing is bit complex and costly too.   EC2 Detailed Monitoring is charged at $2.10 per instance per month (assumes 7 metrics per instance) and goes down to $0.14 per instance at the lowest priced tier. 
-3. Metrics collected by the CloudWatch agent are billed as custom metrics. custom metric costs 0.30 per metric per month.
+3. Metrics collected by the CloudWatch agent are billed as custom metrics. custom metric costs 0.30 per metric per month. i.e., to collect memory used percentage, there is 30c per month per instance.
+4. Metrics used in "alarm" costs 30c per alarm per metric per month.
 4. The logs processed in cloudwatch is charged for amount of data transferred out, storing data and analysis (logs insight queries).
 5. SNS topic costs money. It is based on the number of monthly API requests made, and the number of deliveries to various endpoints (the cost of the delivery depends on the endpoint type). 1000 email notifications free in free-tier and it costs $2 for 100,000 email notifications.
 6. Since we are using EC2 instance, that'll will also cost money.
+
+The usage from Billing Dashboard for this exercise are given below. This exercise is developed in 6 hours and costed nothing. 
+$0.00 per alarm metric month - first 10 alarm metrics - 0.164 Alarms
+$0.00 per metric-month - first 10 metrics - 0.831 Metrics
+$0.00 per request - first 1,000,000 requests - 5,714.000 Requests
+$0.30 per alarm metric month (high resolution) - US East (Northern Virginia) - 0.025 Alarms
+
+AmazonCloudWatch PutLogEvents-First 5GB per month of log data ingested is free - 0.000001 GB
+
+AmazonCloudWatch StartQuery - First 5GB per month of log data scanned by CloudWatch Logs Insights queries is free-  0.010 GB
+
+AmazonCloudWatch USE1-TimedStorage-ByteHrs First 5GB-mo per month of logs storage is free - 0.000002 GB-Mo
 
 ## Monitoring EC2
 Some terminologies and defintions to note are given below. For the details, Ref https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html .

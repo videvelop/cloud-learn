@@ -20,7 +20,7 @@ $ cd ~/.ssh
 $ ls id_rsa_aws_cf id_rsa_aws_cf.pub
 ```
 
-Copy the public key material (the content of the file id_rsa_aws_cf.pub) into the cloudformation template. Then run the below.
+Copy your public key material (the content of the file id_rsa_aws_cf.pub) into the cloudformation template before running the below command.
 ```
 $ aws cloudformation create-stack --stack-name chwcfnodejsrehost --template-body file://chw-cf-nodejs-rehost.json 
 

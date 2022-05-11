@@ -4,10 +4,10 @@ Resources:
     Properties:
       BucketName: chwcfs3bucket
       Tags:
-        - Key: CHWCREATOR
-          Value: CF-EC2-S3.YAML Cloudformation
-        - Key: DELETETIME
-          Value: immediate
+        - Key: "CHWCREATOR"
+          Value: "CHWTUTORIAL"
+        - Key: "CHWDELETETIME"
+          Value: "immediate"
   chwcfs3bucketpolicy:
     Type: 'AWS::S3::BucketPolicy'
     Properties:

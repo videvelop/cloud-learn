@@ -209,7 +209,7 @@ $ aws s3 cp s3://chw-sample-bkt1/m.backup .
 download: s3://chw-sample-bkt1/m.backup to ./m.backup   
 ```
 
-Now that the backup file is available in EC2, use that to set up your RDB with on-prem database copy. You can install docker in ec2 and install a database and restore this backupfile into that docker instance of the database.
+Now that the backup file is available in EC2, use that to set up your RDB in an ec2 instance with on-prem database copy. You can install docker in ec2 and install a database and restore this backupfile into that docker instance of the database.
 
 ## Destroy the services using AWS console
   1. Stop & terminate the instance 
