@@ -1,7 +1,7 @@
 # S3 - How to store/retrieve your backup files in S3?
 You have learnt to create ec2 instance by now. Let's get into an important storage service now - S3.
 
-In this sample we'll store RDS (say MariaDB) backup taken from onprem server in S3, and retrieve from S3 to EC2. This is one easy lift-and-shift (Rehost) way to migrate DB from onprem to cloud.  This requires DB downtime to have perfectly sync'ed data.  Later, we'll have sample using AWS Database Migration Service that'll avoid DB downtime. 
+In this sample we'll store RDS (say MariaDB) backup taken from onprem server in S3, and retrieve from S3 to EC2. This is one easy lift-and-shift (Rehost) way to migrate DB from onprem to cloud.  This requires DB downtime to have perfectly sync'ed data.  Later, we'll have sample using AWS Database Migration Service that'll avoid DB downtime.  
 
 S3 is of "object" storage type. It is suitable for storing backups, hosting static/dynamic web sites, media files.  S3 is NOT suitable (not possible) for installing applications and run from this storage by attaching to EC2; Not suitable as DB installation storage.
 
