@@ -1,10 +1,15 @@
-# 
+# AWS Services - Cloudtrail, AWS Config, X-Ray 
+This exercise is meant for understanding introduction information about some services that will be used in later exercises.
+
+We will look at:
+1. CloudTrail -  AWS CloudTrail enables auditing, security monitoring, and operational troubleshooting by tracking your user activity and API usage.
+2. AWS Config
+3. X-Ray
+
 # CloudTrail
 All the AWS services accessed through AWS Cosole, SDK and CLI are logged using CloudTrail.  CloudTrail is enabled on the AWS account the account is created.
 
 AWS CloudTrail logs management events (It means CRUD on all the AWS services, for e.g., ec2 instances create/delete/modify/list) across AWS services by default for all regions. 
-
-AWS CloudTrail enables auditing, security monitoring, and operational troubleshooting by tracking your user activity and API usage.
 
 # `AWS-PRICE` for this exercise
 1. The management events are delivered for free in S3 bucket by default.  
