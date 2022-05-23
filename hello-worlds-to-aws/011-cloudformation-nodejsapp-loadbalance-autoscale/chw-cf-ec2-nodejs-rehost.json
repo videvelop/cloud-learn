@@ -1,0 +1,21 @@
+{
+    "Resources": {
+        "CHWEC2NodejsRehost": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "UserData": {
+                    "Fn::Base64": { "Fn::Sub": "#!/bin/bash\n yum update -y \n curl --silent --location https://rpm.nodesource.com/setup_14.x |bash - \n yum install yarn nodejs -y \n yum install git -y \n git clone https://github.com/videvelop/cloud-learn.git \n cd cloud-learn/hello-worlds/001-nodejs-microservice-restapi-noauth/ \n npm install \n npm run start &\n"
+                    }
+                },
+            "ImageId" : "ami-0f9fc25dd2506cf6d",
+            "KeyName" : "chwcfec2nodejsrehost",
+            "InstanceType" : "t2.micro",
+            "SecurityGroups" : ["chwcfec2secgroup"],
+            "Tags" : [
+                { "Key" : "CHW", "Value" : "CHW" },
+                { "Key" : "CHWAPP", "Value" : "app1" }
+             ]
+            }
+        }
+    }
+}
