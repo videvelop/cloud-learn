@@ -13,11 +13,35 @@ function mylog (logmsg) {
     console.log(`Req<${reqSeq}> H<${hostname}>  T<${new Date().toISOString()}>  ${logmsg}`);
 }
 
-app.listen(server_port, () =>
+function nwIPs () {
+    const nets = os.networkInterfaces();
+
+    const results = Object.create(null); // Or just '{}', an empty object
+
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+            // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+        if (net.family === familyV4Value && !net.internal) {
+            if (!results[name]) {
+                results[name] = [];
+            }
+            results[name].push(net.address);
+            mylog (`IP address is ${results[name]}`);
+        }
+    }
+    }
+
+}
+
+app.listen(server_port, () => {
     mylog(`Server started at port ${server_port}. Try http://localhost:${server_port}/
     working routes 
     http://localhost:${server_port}/
-    http://localhost:${server_port}/healthcheck`)
+    http://localhost:${server_port}/healthcheck`);
+    nwIPs ();
+}
 );
 
 
