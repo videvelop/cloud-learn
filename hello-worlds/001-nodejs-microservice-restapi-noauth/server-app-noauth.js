@@ -14,6 +14,7 @@ function mylog (logmsg) {
 }
 
 function nwIPs () {
+    var ret="";
     const nets = os.networkInterfaces();
 
     const results = Object.create(null); // Or just '{}', an empty object
@@ -28,11 +29,11 @@ function nwIPs () {
                 results[name] = [];
             }
             results[name].push(net.address);
-            mylog (`IP address is ${results[name]}`);
+            ret=ret+`IP address is ${results[name]}\n`);
         }
     }
     }
-
+return ret;
 }
 
 app.listen(server_port, () => {
@@ -52,11 +53,13 @@ app.use(function (req, res, next) {
 
 // show a response
 app.get('/', (req, res) => {
+    const myip = nwIPs();
     mylog(`Processing URL ${req.baseUrl}`);
     res.send(`Hello World!<br/> Sample nodejs express app <br/> 
     working routes 
    <div><a href="http://localhost:${server_port}/">/</a></div>
    <div><a href="http://localhost:${server_port}/healthcheck">/healthcheck</a></div>
+  <div> IP address of this machine ${myip} </div> 
     `);
 });
 
