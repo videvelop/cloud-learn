@@ -1,4 +1,10 @@
 {
+    "Parameters": {
+        "az": {
+            "Type": "String",
+            "Description": "subnet for the instance"
+        }
+    },
     "Resources": {
         "CHWEC2NodejsRehost": {
             "Type": "AWS::EC2::Instance",
@@ -9,6 +15,7 @@
                 },
             "ImageId" : "ami-0f9fc25dd2506cf6d",
             "KeyName" : "chwcfec2nodejsrehost",
+            "AvailabilityZone": {"Ref":"az"},
             "InstanceType" : "t2.micro",
             "SecurityGroups" : ["chwcfec2secgroup"],
             "Tags" : [

@@ -31,7 +31,8 @@
             "Type": "AWS::EC2::KeyPair",
             "Properties": {
                 "KeyName": "chwcfec2nodejsrehost",
-                "PublicKeyMaterial":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/AExiv3mJVliliYYQss1o1sAfujxvU5jg69FI8DOM0t8/Bb4ycR1Q1UiZpTTkddtdhrItcYJNU/tY4zj7t2wb/CzreeewvOTE7J1d4gU27GBCECCDZLzKicvMpr0IR3rq504krfS7ISt5/VcyiZLLOwud3PqNP3k7a2qgO8ZAOF19dliQa6PuHIIO3o/hmBp1CkX/TI+GUJ9SwD6qQ4WD+2qAg8VX9W4BQEVUrfHf36g+UmPsvst0AnVgkRA3LqeaRU4iJDna7vp9mZTW93GaV+loHLcQbYvWpXQ6Vis3rbsYOPiVY+5Bn2WD/K8UBfLlnJQMEFHpx1NPNqLjpENeUxdT09YqTtJfPVWaXObByTAbQVllyjiXGgDx/Em0ekle3AEQJaZww2Dt23EyXfyf+vdh81xAXx0D4EM33kC5DTi2Wd5ZXc03FS8VUQTbXMF/oHN+P91S20IEoSp8o5xm9Rm78j7OaEYmqfCfh+tb+lb8yYjpfoupNiugxTWhfwU= vimala@LAPTOP-MN5N48F6"
+                "PublicKeyMaterial":
+                "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDtNATNbypdWYLISpxRN5Eu3MadEb1EpbW/VaiZBEa8UaC0w9gh+8ih9ZzulsUdE6/Lq/5Tq6pwgpWKgJn4nD9Y78yYXV/WKjXFds76qTPQ265cHmJ16IOP4FBT0960iEbYMESznzpQqfuhv6Y0robYRqtkNKzbECvQBL9aO3YC0/WOg9gJBTyQR6fVTF7NsnNSS55hYsGYnq1i4mcu7d/hmVvEaI39gwX5SwmqxdWxvkuBE9H6WmqOY5vpAo8eLP04Bq90XbPNqj/xdr12DCfrhmLk9Sg4Msxz+HMFOgkvo6zTm0q7LIylJMOHLgHvJXFJ4D0667vytDD2V5hR2OQbWPi4fzd5reSvnv24xOY9eWZYZnnyzA0rMvmMFY+Tr424ZoZsPHaIsDBcID1Xou4y6dQnEFa8uCnEuDfbYrautboLSx16RPpE+6ShO+v+jMXNxgupIisiISskoMEiMOuzCTymedrnfEIgtVEr+fHU7sg5AsJ8/QTzHDvfuYBv/T0= vimala@LAPTOP-MN5N48F6"
             }
         }
     }

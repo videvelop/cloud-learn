@@ -1,0 +1,71 @@
+{
+"Parameters": {
+        "chw_nodejs_instid_1": {
+            "Type": "String",
+            "Description": "instance id "
+        },
+        "chw_nodejs_instid_2": {
+            "Type": "String",
+            "Description": "instance id "
+        },
+        "chw_subnet_id1": {
+            "Type": "String",
+            "Description": "subnet id "
+        },
+        "chw_subnet_id2": {
+            "Type": "String",
+            "Description": "subnet id "
+        }
+    },
+"Resources": {
+    "CHWALB": {
+        "Type" : "AWS::ElasticLoadBalancingV2::LoadBalancer",
+        "Properties" : {
+            "IpAddressType" : "ipv4",
+            "Name" : "chwalb",
+            "Scheme" : "internet-facing",
+            "Subnets" : [ 
+                {"Ref": "chw_subnet_id1"},
+                {"Ref": "chw_subnet_id2"}
+            ],
+            "Type" : "application"
+          },
+          "DependsOn": [ "CHWTargetGroup" ]
+    },
+    "CHWTargetGroup": {
+        "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+            "Name" : "chwtargetgrp",
+            "HealthCheckEnabled" : true,
+            "HealthCheckIntervalSeconds" : 30,
+            "HealthCheckPath" : "/",
+            "HealthCheckPort" : "traffic-port",
+            "HealthCheckProtocol" : "HTTP",
+            "HealthCheckTimeoutSeconds" : 5,
+            "HealthyThresholdCount" : 5,
+            "IpAddressType" : "ipv4",
+            "Matcher" : {
+                "HttpCode":"200"
+            },
+            "Port" : 9001,
+            "Protocol" : "HTTP",
+            "ProtocolVersion" : "HTTP1",
+            "Targets" : [ 
+                {
+                    "AvailabilityZone" : "us-east-1a",
+                    "Id" : {"Ref": "chw_nodejs_instid_1"},
+                    "Port" : 9001
+                  },
+                  {
+                    "AvailabilityZone" : "us-east-1a",
+                    "Id" : {"Ref": "chw_nodejs_instid_2"},
+                    "Port" : 9001
+                  }
+            ],
+            "TargetType" : "instance",
+            "UnhealthyThresholdCount" : 2,
+            "VpcId" : { "Ref": "chw_nodejs_inst1" }
+        }
+    }
+}
+}

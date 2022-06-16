@@ -15,12 +15,13 @@ We are supplying keypair PublicKeyMaterial in our cloudformation template in thi
 
 Create the ssh key first in your local machine in pem format. Use the below commands to create the required ssh keypair.
 ```
-$ ssh-keygen -f id_rsa_aws_cf -e -m pem
+$ ssh-keygen -f chwcfec2nodejsrehost
+$ ssh-keygen -f chwcfec2nodejsrehost -e -m pem
 $ cd ~/.ssh
-$ ls id_rsa_aws_cf id_rsa_aws_cf.pub
-```
+$ ls chwcfec2nodejsrehost chwcfec2nodejsrehost.pub
+$ cp chwcfec2nodejsrehost chwcfec2nodejsrehost.pem
 
-Copy your public key material (the content of the file id_rsa_aws_cf.pub) into the cloudformation template before running the below command.
+Copy your public key material (the content of the file chwcfec2nodejsrehost.pub) into the cloudformation template before running the below command.
 ```
 $ aws cloudformation create-stack --stack-name chwcfnodejsrehost --template-body file://chw-cf-nodejs-rehost.json 
 
