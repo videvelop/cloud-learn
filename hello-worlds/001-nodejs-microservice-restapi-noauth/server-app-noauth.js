@@ -29,7 +29,7 @@ function nwIPs () {
                 results[name] = [];
             }
             results[name].push(net.address);
-            ret=ret+`IP address is ${results[name]}\n`);
+            ret=ret+`IP address is ${results[name]}`;
         }
     }
     }
@@ -57,9 +57,9 @@ app.get('/', (req, res) => {
     mylog(`Processing URL ${req.baseUrl}`);
     res.send(`Hello World!<br/> Sample nodejs express app <br/> 
     working routes 
-   <div><a href="http://localhost:${server_port}/">/</a></div>
-   <div><a href="http://localhost:${server_port}/healthcheck">/healthcheck</a></div>
-  <div> IP address of this machine ${myip} </div> 
+   <div><a href="http://localhost:${server_port}/">http://localhost:${server_port}/</a></div>
+   <div><a href="http://localhost:${server_port}/healthcheck">http://localhost:${server_port}/healthcheck</a></div>
+  <div> IP address of this machine ${myip} . If localhost doesn't work, try with the IPs.</div> 
     `);
 });
 
