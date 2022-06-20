@@ -27,7 +27,7 @@ $ aws cloudformation create-stack --stack-name chwcfnodejsrehost --template-body
 ```
 Monitor the stack creation events using the below command.
 ```
- $ aws cloudformation describe-stack-events --stack-name chwcfnodejsrehost --query 'StackEvents[*].{StackName:StackName,ResourceType:ResourceType,ResourceStatus:ResourceStatus}'
+ $ aws cloudformation describe-stack-events --stack-name chwcfnodejsrehost --query 'StackEvents[*].{StackName:StackName,ResourceType:ResourceType,ResourceStatus:ResourceStatus, Timestamp:Timestamp}'
 ```
 
  You can pass two types of user data to Amazon EC2: shell scripts and cloud-init directives. You can also pass this data into the launch instance wizard as plain text, as a file (this is useful for launching instances using the command line tools), or as base64-encoded text (for API calls).
